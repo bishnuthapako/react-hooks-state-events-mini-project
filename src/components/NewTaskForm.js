@@ -2,34 +2,39 @@ import React, {useState} from "react";
 import { v4 as uuidv4 } from 'uuid'
 
 
-function NewTaskForm({categories, onTaskFormSubmit}) {
+function NewTaskForm({onTaskFormSubmit, categories}) {
   const [text, setText] = useState("")
-  const [category, setCategory] = useState(categories)
+  const [category, SetCategory]=useState("")
+  const [catOption, setCatOption]= useState()
 
 
-  const categoryOption = category.map((cat)=><option key={uuidv4()} value={category} onChange={(e)=>setCategory(e.target.value)}>{cat}</option>)
+  const optionCategory = categories.map((cat)=><option key={uuidv4()} value={catOption} onChange={(e)=>setCatOption(e.target.value)}>{cat}</option>)
+  console.log(optionCategory)
 
+  
   function handleSubmitForm(e){
     e.preventDefault()
-
-    const newText = {
-      text,
-      category
+    
+    const newData = {
+      id: uuidv4(),
+      text: text, 
+      category: category
     }
-    onTaskFormSubmit(newText)
+    // console.log(newData, "test-data")
+    onTaskFormSubmit(newData)
   }
-
+  
 
   return (
     <form className="new-task-form" onSubmit={handleSubmitForm}>
       <label>
         Details
-        <input type="text" name="text" value={text} onChange={(e)=>setText(e.target.value)}/>
+        <input type="text" name="text" value={text} onChange={(e)=> setText(e.target.value)}/>
       </label>
       <label>
         Category
-        <select name="category">
-          {categoryOption}
+        <select name="category" value={category} onChange={(e)=>SetCategory(e.target.value)}>
+          {optionCategory.slice(1)}
           {/* render <option> elements for each category here */}
         </select>
       </label>
